@@ -29,7 +29,6 @@ export class CampaignController {
 
 
   @SetMetadata('roles', ['ADMIN'])
-  @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
   async update(
     @Param('id') id: string,

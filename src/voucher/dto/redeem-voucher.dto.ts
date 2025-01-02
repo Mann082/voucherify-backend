@@ -1,13 +1,11 @@
-import { IsString, IsNumber, Min } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class RedeemVoucherDto {
   @IsString()
+  @IsNotEmpty()
   code: string;
 
-  @IsNumber()
-  @Min(0)
-  orderAmount: number;
-
   @IsString()
+  @IsNotEmpty()
   userId: string;
 }

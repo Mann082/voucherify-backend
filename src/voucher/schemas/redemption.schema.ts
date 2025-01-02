@@ -1,22 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Types } from 'mongoose';
 
 @Schema()
 export class Redemption extends Document {
-  @Prop({ required: true })
-  voucherCode: string;
+  @Prop({ type: Types.ObjectId, ref: 'Voucher', required: true })
+  voucherId: string;
 
   @Prop({ required: true })
   userId: string;
 
-  @Prop({ type: Date, default: Date.now })
-  redeemedAt: Date;
+  @Prop({ default: 0 })
+  usageCount: number;
 
-  @Prop()
-  orderId: string;
-
-  @Prop({ required: true })
-  discountApplied: number;
+  @Prop({ default: Date.now })
+  lastRedeemedAt: Date;
 }
 
 export const RedemptionSchema = SchemaFactory.createForClass(Redemption);

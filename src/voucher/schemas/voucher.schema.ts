@@ -15,8 +15,14 @@ export class Voucher extends Document {
   @Prop({ default: null })
   maxLimit: number;
 
+  @Prop({required:false})
+  maxDiscount: number;
+
   @Prop({ default: 1 })
-  maxUsage: number;
+  maxUsagePerUser: number;
+
+  @Prop({ default: 10 })
+  totalUsages: number;
 
   @Prop({ default: 'ACTIVE' })
   status: 'ACTIVE' | 'EXPIRED' | 'USED';
@@ -25,7 +31,7 @@ export class Voucher extends Document {
   expirationDate: Date;
 
   @Prop({ default: 0 })
-  usageCount: number;
+  currentUsage: number;
 
   @Prop({ type: String, ref: 'Campaign' })
   campaignId: string;

@@ -3,7 +3,6 @@ import { VoucherModule } from './voucher/voucher.module';
 import { UserModule } from './user/user.module';
 import { CampaignModule } from './campaign/campaign.module';
 import { AuthModule } from './auth/auth.module';
-import { RedemptionModule } from './redemption/redemption.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
@@ -17,7 +16,6 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     CampaignModule,
     AuthModule,
-    RedemptionModule,
   ],
 })
 export class AppModule {}

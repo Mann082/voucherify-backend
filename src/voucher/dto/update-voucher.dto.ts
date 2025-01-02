@@ -1,47 +1,50 @@
-import { IsString, IsNotEmpty, IsIn, IsNumber, IsOptional, Min, IsDateString, isNumber } from 'class-validator';
+import { IsOptional, IsString, IsNumber, Min, Max, IsIn, IsDateString } from 'class-validator';
 
-export class CreateVoucherDto {
+export class UpdateVoucherDto {
+  @IsOptional()
   @IsString()
-  @IsNotEmpty()
-  code: string;
+  code?: string;
 
+  @IsOptional()
   @IsString()
   @IsIn(['PERCENTAGE', 'AMOUNT'])
-  type: 'PERCENTAGE' | 'AMOUNT';
+  type?: 'PERCENTAGE' | 'AMOUNT';
 
+  @IsOptional()
   @IsNumber()
   @Min(0)
-  value: number;
+  value?: number;
 
-  @IsNumber()
   @IsOptional()
-  maxDiscount: number;
-
   @IsNumber()
-  @IsOptional()
   @Min(0)
   maxLimit?: number;
 
-  @IsNumber()
   @IsOptional()
+  @IsNumber()
   @Min(1)
   maxUsagePerUser?: number;
 
-  @IsNumber()
   @IsOptional()
+  @IsNumber()
   @Min(1)
   totalUsages?: number;
 
+  @IsOptional()
   @IsString()
   @IsIn(['ACTIVE', 'EXPIRED', 'USED'])
-  @IsOptional()
   status?: 'ACTIVE' | 'EXPIRED' | 'USED';
 
-  @IsDateString()
   @IsOptional()
+  @IsDateString()
   expirationDate?: Date;
 
-  @IsString()
   @IsOptional()
+  @IsNumber()
+  @Min(0)
+  currentUsage?: number;
+
+  @IsOptional()
+  @IsString()
   campaignId?: string;
 }
