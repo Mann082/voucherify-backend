@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { VoucherModule } from './voucher/voucher.module';
-import { UserModule } from './user/user.module';
 import { CampaignModule } from './campaign/campaign.module';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -13,7 +12,6 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     VoucherModule,
-    UserModule,
     CampaignModule,
     AuthModule,
   ],

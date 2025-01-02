@@ -47,36 +47,29 @@ export class VoucherService {
       throw new NotFoundException(`Voucher with code ${code} not found.`);
     }
 
-    // Check if the voucher is active
     if (voucher.status !== 'ACTIVE') {
       throw new BadRequestException(`Voucher ${code} is not active.`);
     }
 
-    // Check if the voucher has expired
     if (voucher.expirationDate && voucher.expirationDate < new Date()) {
       throw new BadRequestException(`Voucher ${code} has expired.`);
     }
 
-    // Check if the voucher has reached its total usage limit
     if (voucher.currentUsage >= voucher.totalUsages) {
       throw new BadRequestException(`Voucher ${code} has reached its total usage limit.`);
     }
 
-    // Check if the user has already redeemed the voucher
     const redemption = await this.redemptionModel.findOne({ voucherId: voucher._id, userId }).exec();
 
     if (redemption) {
-      // If the user has already redeemed, check if they exceeded max usage per user
       if (redemption.usageCount >= voucher.maxUsagePerUser) {
         throw new BadRequestException(`User has reached the max usage limit for voucher ${code}.`);
       }
 
-      // Increment redemption usage count and update last redeemed time
       redemption.usageCount += 1;
       redemption.lastRedeemedAt = new Date();
       await redemption.save();
     } else {
-      // Create a new redemption entry for the user if they haven't redeemed the voucher yet
       const newRedemption = new this.redemptionModel({
         voucherId: voucher._id,
         userId,
@@ -85,10 +78,8 @@ export class VoucherService {
       await newRedemption.save();
     }
 
-    // Increment the voucher's current usage count
     voucher.currentUsage += 1;
 
-    // If the total usage limit is reached, mark the voucher as used
     if (voucher.currentUsage >= voucher.totalUsages) {
       voucher.status = 'USED';
     }
@@ -100,19 +91,19 @@ export class VoucherService {
   }
 
   async getBestVouchers(amount: number) {
-    const vouchers = await this.findAllVouchers(); // Fetch active vouchers
+    const vouchers = await this.findAllVouchers();
     const bestVouchers = [];
 
     for (const voucher of vouchers) {
       let discountValue = 0;
 
       if (voucher.type === 'PERCENTAGE') {
-        discountValue = (amount * voucher.value) / 100; // Calculate percentage discount
+        discountValue = (amount * voucher.value) / 100; 
         if (voucher.maxDiscount && discountValue > voucher.maxDiscount) {
-          discountValue = voucher.maxDiscount; // Apply max discount limit
+          discountValue = voucher.maxDiscount; 
         }
       } else {
-        discountValue = voucher.value; // For fixed amount vouchers
+        discountValue = voucher.value;
       }
 
       if (discountValue > 0) {
@@ -120,11 +111,11 @@ export class VoucherService {
       }
     }
 
-    bestVouchers.sort((a, b) => b.discountValue - a.discountValue); // Sort by discount value in descending order
+    bestVouchers.sort((a, b) => b.discountValue - a.discountValue); 
     return bestVouchers;
   }
 
   async findAllVouchers(): Promise<Voucher[]> {
-    return this.voucherModel.find({ status: 'ACTIVE' }).exec(); // Fetch only active vouchers from the database
+    return this.voucherModel.find({ status: 'ACTIVE' }).exec(); 
   }
 }

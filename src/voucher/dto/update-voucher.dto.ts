@@ -25,6 +25,11 @@ export class UpdateVoucherDto {
   @Min(1)
   maxUsagePerUser?: number;
 
+  
+  @IsNumber()
+  @IsOptional()
+  maxDiscount: number;
+
   @IsOptional()
   @IsNumber()
   @Min(1)
@@ -44,7 +49,6 @@ export class UpdateVoucherDto {
   @Min(0)
   currentUsage?: number;
 
-  @IsOptional()
   @IsString()
   campaignId?: string;
 }

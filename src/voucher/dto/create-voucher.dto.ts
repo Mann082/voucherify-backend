@@ -42,6 +42,5 @@ export class CreateVoucherDto {
   expirationDate?: Date;
 
   @IsString()
-  @IsOptional()
   campaignId?: string;
 }
